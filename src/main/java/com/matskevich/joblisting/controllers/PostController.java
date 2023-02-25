@@ -2,6 +2,7 @@ package com.matskevich.joblisting.controllers;
 
 import com.matskevich.joblisting.models.Post;
 import com.matskevich.joblisting.repositories.PostRepository;
+import com.matskevich.joblisting.repositories.SearchRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import springfox.documentation.annotations.ApiIgnore;
@@ -15,9 +16,12 @@ public class PostController {
 
     PostRepository postRepository;
 
+    SearchRepository searchRepository;
+
     @Autowired
-    public PostController(PostRepository postRepository) {
+    public PostController(PostRepository postRepository, SearchRepository searchRepository) {
         this.postRepository = postRepository;
+        this.searchRepository = searchRepository;
     }
 
     @ApiIgnore
@@ -34,5 +38,10 @@ public class PostController {
     @PostMapping("/post")
     public Post addPost(@RequestBody Post post) {
         return postRepository.save(post);
+    }
+
+    @GetMapping("/posts/{text}")
+    public List<Post> search(@PathVariable String text) {
+        return searchRepository.findByText(text);
     }
 }
