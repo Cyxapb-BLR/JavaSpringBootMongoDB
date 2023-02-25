@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.util.List;
 
 @RestController
+@CrossOrigin(origins = "http://localhost:3000") //for React
 public class PostController {
 
     PostRepository postRepository;
@@ -31,16 +32,19 @@ public class PostController {
     }
 
     @GetMapping("/posts")
+    @CrossOrigin
     public List<Post> getAllPosts() {
         return postRepository.findAll();
     }
 
     @PostMapping("/post")
+    @CrossOrigin
     public Post addPost(@RequestBody Post post) {
         return postRepository.save(post);
     }
 
     @GetMapping("/posts/{text}")
+    @CrossOrigin
     public List<Post> search(@PathVariable String text) {
         return searchRepository.findByText(text);
     }
